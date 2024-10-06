@@ -41,7 +41,7 @@ export default function Home() {
         vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
       })
         .then((token) => {
-          alert(token);
+          console.log(token);
           // 알림 권한 요청
           Notification.requestPermission()
             .then((permission) => {
