@@ -13,6 +13,8 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [token, setToken] = useState('');
+  const [data, setData] = useState('');
+
   // Firebase 앱 초기화
   const app = initializeApp(firebaseConfig);
 
@@ -46,8 +48,6 @@ export default function Home() {
 
           setToken(token);
 
-          copy(token);
-
           // 알림 권한 요청
           Notification.requestPermission()
             .then((permission) => {
@@ -57,6 +57,7 @@ export default function Home() {
                 // 포그라운드 메시지 처리
                 unsubscribe = onMessage(messaging, (payload) => {
                   console.log('포그라운드 메시지:', payload);
+                  setData(JSON.stringify(payload.data));
                   // 메시지를 처리하거나 UI에 알림 표시 로직
                 });
               } else {
@@ -80,7 +81,14 @@ export default function Home() {
 
   return (
     <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
-      {token}
+      <button
+        onClick={() => {
+          copy(token);
+        }}
+      >
+        {token}
+      </button>
+      {data && <div>알람 내용: {data}</div>}
     </div>
   );
 }
